@@ -7,7 +7,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    </Grid>
+    <SplitView Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" IsPaneOpen="True" DisplayMode="Inline">
+        <SplitView.Pane>
+            <RelativePanel Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}" Padding="20">
+                <AutoSuggestBox x:Name="Search" QuerySubmitted="ExecuteSearch" QueryIcon="Zoom" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></AutoSuggestBox>
+                <ListView x:Name="ApplicantView" SelectionChanged="ApplicantSelected" ItemsSource="{x:Bind applicantList, Mode=OneWay}" RelativePanel.Below="Search" RelativePanel.Above="ActionBar" RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="true" Margin="0,20,0,0"></ListView>
+                <CommandBar Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" x:Name="ActionBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="true" RelativePanel.AlignBottomWithPanel="True">
+                    <AppBarButton Icon="OpenLocal" Click="OpenCSV" Label="Load Applicants"></AppBarButton>
+                    <AppBarButton Icon="Save" Click="SaveResults" Label="Save Results"></AppBarButton>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton Click="SaveTemplate" Label="Save Template"></AppBarButton>
+                    </CommandBar.SecondaryCommands>
+                </CommandBar>
+            </RelativePanel>
+        </SplitView.Pane>
+        <SplitView.Content>
+            <Grid Padding="20">
+                <ScrollViewer x:Name="ContentGrid">
+                    <ScrollViewer.ContentTransitions>
+                        <TransitionCollection>
+                            <ContentThemeTransition/>
+                        </TransitionCollection>
+                    </ScrollViewer.ContentTransitions>
+                </ScrollViewer>
+            </Grid>
+        </SplitView.Content>
+    </SplitView>
 </Page>
