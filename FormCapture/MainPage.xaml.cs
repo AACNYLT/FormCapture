@@ -59,11 +59,11 @@ namespace FormCapture
                 {
                     await ProcessCSV(file);
                     await Notify("Import complete.");
+                    loadApplicants();
                 } catch
                 {
                     await Notify("An error occurred - check the format of your CSV file.");
                 }
-                loadApplicants();
             }
         }
 
@@ -71,6 +71,7 @@ namespace FormCapture
         {
             fullApplicantList = ApplicantService.getApplicants();
             applicantList = fullApplicantList;
+            Bindings.Update();
         }
 
         private void ExecuteSearch(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
