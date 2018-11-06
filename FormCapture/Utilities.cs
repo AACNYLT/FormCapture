@@ -18,6 +18,7 @@ namespace FormCapture
                 var results = csv.GetRecords<Applicant>().ToList();
                 var context = new FormContext();
                 context.Applicants.RemoveRange(context.Applicants.ToList());
+                context.Interviews.RemoveRange(context.Interviews.ToList());
                 await context.SaveChangesAsync();
                 await context.Applicants.AddRangeAsync(results);
                 await context.SaveChangesAsync();
@@ -65,20 +66,23 @@ namespace FormCapture
                 foreach (var interview in interviews)
                 {
                     var applicant = applicants.Where(n => n.Id == interview.ApplicantId).FirstOrDefault();
-                    csv.WriteField(interview.ApplicantId);
-                    csv.WriteField(applicant.FirstName);
-                    csv.WriteField(applicant.LastName);
-                    csv.WriteField(interview.Uniform);
-                    csv.WriteField(interview.Spirit);
-                    csv.WriteField(interview.Presentation);
-                    csv.WriteField(interview.Preparation);
-                    csv.WriteField(interview.Attitude);
-                    csv.WriteField(interview.Understanding);
-                    csv.WriteField(interview.Comments);
-                    csv.WriteField(interview.Recommend);
-                    csv.WriteField(interview.RecommendedPosition);
-                    csv.WriteField(interview.Team);
-                    csv.NextRecord();
+                    if (applicant != null)
+                    {
+                        csv.WriteField(interview.ApplicantId);
+                        csv.WriteField(applicant.FirstName);
+                        csv.WriteField(applicant.LastName);
+                        csv.WriteField(interview.Uniform);
+                        csv.WriteField(interview.Spirit);
+                        csv.WriteField(interview.Presentation);
+                        csv.WriteField(interview.Preparation);
+                        csv.WriteField(interview.Attitude);
+                        csv.WriteField(interview.Understanding);
+                        csv.WriteField(interview.Comments);
+                        csv.WriteField(interview.Recommend);
+                        csv.WriteField(interview.RecommendedPosition);
+                        csv.WriteField(interview.Team);
+                        csv.NextRecord();
+                    }
                 }
                 return;
             }

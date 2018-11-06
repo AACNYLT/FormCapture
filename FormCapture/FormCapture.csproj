@@ -11,7 +11,7 @@
     <AssemblyName>FormCapture</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.16299.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17134.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -99,6 +99,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ApplicantMap.cs" />
+    <Compile Include="Controls\NewApplicant.xaml.cs">
+      <DependentUpon>NewApplicant.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\20171130032132_initial.cs" />
     <Compile Include="Migrations\20171130032132_initial.designer.cs">
       <DependentUpon>20171130032132_initial.cs</DependentUpon>
@@ -107,10 +110,10 @@
     <Compile Include="Models.cs" />
     <Compile Include="ApplicantService.cs" />
     <Compile Include="FormElement.cs" />
-    <Compile Include="FormPanel.xaml.cs">
+    <Compile Include="Controls\FormPanel.xaml.cs">
       <DependentUpon>FormPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InterviewPanel2017.xaml.cs">
+    <Compile Include="Controls\InterviewPanel2017.xaml.cs">
       <DependentUpon>InterviewPanel2017.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
@@ -173,11 +176,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="FormPanel.xaml">
+    <Page Include="Controls\FormPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="InterviewPanel2017.xaml">
+    <Page Include="Controls\InterviewPanel2017.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NewApplicant.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

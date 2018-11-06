@@ -21,10 +21,11 @@ namespace FormCapture
         public string FullName => FirstName + " " + LastName;
 
         public Applicant() { }
-        public Applicant(string firstName, string lastName)
+        public Applicant(string firstName, string lastName, int id)
         {
             FirstName = firstName;
             LastName = lastName;
+            Id = id;
         }
 
         public override string ToString()

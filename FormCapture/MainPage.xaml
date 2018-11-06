@@ -14,9 +14,11 @@
                 <ListView x:Name="ApplicantView" SelectionChanged="ApplicantSelected" ItemsSource="{x:Bind applicantList, Mode=OneWay}" RelativePanel.Below="Search" RelativePanel.Above="ActionBar" RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="true" Margin="0,20,0,0"></ListView>
                 <CommandBar Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" x:Name="ActionBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="true" RelativePanel.AlignBottomWithPanel="True">
                     <AppBarButton Icon="OpenLocal" Click="OpenCSV" Label="Load Applicants"></AppBarButton>
-                    <AppBarButton Icon="Save" Click="SaveResults" Label="Save Results"></AppBarButton>
+                    <AppBarButton Icon="Download" Click="SaveResults" Label="Save Results"></AppBarButton>
+                    <AppBarButton Icon="Add" Click="AddApplicant" Label="Add Applicant"></AppBarButton>
                     <CommandBar.SecondaryCommands>
                         <AppBarButton Click="SaveTemplate" Label="Save Template"></AppBarButton>
+                        <AppBarButton Click="ShowPrivacyPolicy" Label="Privacy Policy"></AppBarButton>
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
             </RelativePanel>
@@ -26,7 +28,7 @@
                 <ScrollViewer x:Name="ContentGrid">
                     <ScrollViewer.ContentTransitions>
                         <TransitionCollection>
-                            <ContentThemeTransition/>
+                            <ContentThemeTransition></ContentThemeTransition>
                         </TransitionCollection>
                     </ScrollViewer.ContentTransitions>
                 </ScrollViewer>

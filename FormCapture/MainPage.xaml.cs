@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage.Pickers;
 using static FormCapture.Utilities;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
+using FormCapture.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -108,6 +100,27 @@ namespace FormCapture
                 var template = await StorageFile.GetFileFromApplicationUriAsync(new Uri(this.BaseUri, "/Assets/template.csv"));
                 await template.CopyAndReplaceAsync(file);
             }
+        }
+
+        private async void AddApplicant(object sender, RoutedEventArgs e)
+        {
+            var dialog = new ContentDialog();
+            var dialogContent = new NewApplicant();
+            dialogContent.ApplicantCreated += delegate
+            {
+                dialog.Hide();
+                loadApplicants();
+            };
+            dialog.Content = dialogContent;
+            await dialog.ShowAsync();
+        }
+
+        private async void ShowPrivacyPolicy(object sender, RoutedEventArgs e)
+        {
+            var dialog = new ContentDialog();
+            dialog.CloseButtonText = "Close";
+            dialog.Content = new TextBlock { Text = "This app won't share any information transmitted or stored with it, nor will that data be used for any other purpose beyond the services the app provides. The data will furthermore not be retained after it is deleted by the user.", TextWrapping = TextWrapping.WrapWholeWords };
+            await dialog.ShowAsync();
         }
     }
 }
