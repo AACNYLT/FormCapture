@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Storage;
 using FormCapture.Controls;
+using Windows.UI.Xaml.Data;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -36,7 +37,8 @@ namespace FormCapture
         {
             if (ApplicantView.SelectedItem != null)
             {
-                ContentGrid.Content = new InterviewPanel2017((Applicant)ApplicantView.SelectedItem);
+                //ContentGrid.Content = new InterviewPanel2017((Applicant)ApplicantView.SelectedItem);
+                ContentGrid.Content = new InterviewPanel2018();
             }
         }
 
@@ -59,9 +61,10 @@ namespace FormCapture
             }
         }
 
-        private void loadApplicants()
+        private async void loadApplicants()
         {
-            fullApplicantList = ApplicantService.getApplicants();
+            //fullApplicantList = ApplicantService.getApplicants();
+            fullApplicantList = await PodioService.GetApplicants();
             applicantList = fullApplicantList;
             Bindings.Update();
         }
@@ -117,10 +120,17 @@ namespace FormCapture
 
         private async void ShowPrivacyPolicy(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog();
-            dialog.CloseButtonText = "Close";
-            dialog.Content = new TextBlock { Text = "This app won't share any information transmitted or stored with it, nor will that data be used for any other purpose beyond the services the app provides. The data will furthermore not be retained after it is deleted by the user.", TextWrapping = TextWrapping.WrapWholeWords };
+            var dialog = new ContentDialog
+            {
+                CloseButtonText = "Close",
+                Content = new TextBlock { Text = "This app won't share any information transmitted or stored with it, nor will that data be used for any other purpose beyond the services the app provides. The data will furthermore not be retained after it is deleted by the user.", TextWrapping = TextWrapping.WrapWholeWords }
+            };
             await dialog.ShowAsync();
+        }
+
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
