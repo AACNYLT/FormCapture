@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,6 +27,17 @@ namespace FormCapture
             }
         }
 
+        public static async Task ProcessPodioApplicants(List<Applicant> applicants)
+        {
+            var context = new FormContext();
+            context.Applicants.RemoveRange(context.Applicants.ToList());
+            context.Interviews.RemoveRange(context.Interviews.ToList());
+            await context.SaveChangesAsync();
+            await context.Applicants.AddRangeAsync(applicants);
+            await context.SaveChangesAsync();
+            return;
+        }
+
         public static async Task Notify(string message)
         {
             var Notifier = new MessageDialog(message);
@@ -38,6 +50,17 @@ namespace FormCapture
             var Notifier = new MessageDialog(message, title);
             await Notifier.ShowAsync();
             return;
+        }
+
+        public static async Task<Boolean> NotifyYesNo(string message, string title)
+        {
+            var Notifier = new MessageDialog(message, title);
+            var result = false;
+            Notifier.Commands.Add(new UICommand("Yes", delegate { result = true; }));
+            Notifier.Commands.Add(new UICommand("No", delegate { result = false; }));
+            Notifier.CancelCommandIndex = 1;
+            await Notifier.ShowAsync();
+            return result;
         }
 
         public static async Task SaveCSV(StorageFile file)

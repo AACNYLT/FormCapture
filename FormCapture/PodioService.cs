@@ -12,7 +12,11 @@ namespace FormCapture
         public static async Task<List<Applicant>> GetApplicants()
         {
             var podio = new Podio("nyltformcapture", "jphJudEO239CPNoMoSRAJ81sbhfuaxdtquCgwUC11R2Pbdc3AqrpWHRzi0R1rfmZ");
-            await podio.AuthenticateWithApp(21458112, "201991f4402f40e082dc1190872661ce");
+            var vault = new Windows.Security.Credentials.PasswordVault();
+            // TODO: UI for picking creds and safe bounce if no creds found
+            var credentials = vault.FindAllByResource("nyltformcapture").First();
+            credentials.RetrievePassword();
+            await podio.AuthenticateWithApp(int.Parse(credentials.UserName), credentials.Password);
             var itemResults = (await podio.ItemService.FilterItems(21458112)).Items;
             var applicants = new List<Applicant>();
             foreach (var item in itemResults)

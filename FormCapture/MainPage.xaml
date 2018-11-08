@@ -16,8 +16,10 @@
                     <AppBarButton Icon="Globe" Label="Podio">
                         <AppBarButton.Flyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem Icon="Download" Click="MenuFlyoutItem_Click" Text="Download from Podio"></MenuFlyoutItem>
+                                <MenuFlyoutItem Icon="Download" Click="PodioDownload" Text="Download from Podio"></MenuFlyoutItem>
                                 <MenuFlyoutItem Icon="Upload" Text="Upload Results to Podio"></MenuFlyoutItem>
+                                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                                <MenuFlyoutItem Icon="Permissions" Click="ShowPodioCredentialDialog" Text="Save Podio Credentials"></MenuFlyoutItem>
                             </MenuFlyout>
                         </AppBarButton.Flyout>
                     </AppBarButton>

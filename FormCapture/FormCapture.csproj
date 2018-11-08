@@ -105,6 +105,9 @@
     <Compile Include="Controls\NewApplicant.xaml.cs">
       <DependentUpon>NewApplicant.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PodioCredentialDialog.xaml.cs">
+      <DependentUpon>PodioCredentialDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\20171130032132_initial.cs" />
     <Compile Include="Migrations\20171130032132_initial.designer.cs">
       <DependentUpon>20171130032132_initial.cs</DependentUpon>
@@ -193,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NewApplicant.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PodioCredentialDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

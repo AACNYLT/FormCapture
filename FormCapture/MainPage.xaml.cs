@@ -54,17 +54,17 @@ namespace FormCapture
                     await ProcessCSV(file);
                     await Notify("Import complete.");
                     loadApplicants();
-                } catch
+                }
+                catch
                 {
                     await Notify("An error occurred - check the format of your CSV file.");
                 }
             }
         }
 
-        private async void loadApplicants()
+        private void loadApplicants()
         {
-            //fullApplicantList = ApplicantService.getApplicants();
-            fullApplicantList = await PodioService.GetApplicants();
+            fullApplicantList = ApplicantService.getApplicants();
             applicantList = fullApplicantList;
             Bindings.Update();
         }
@@ -86,7 +86,8 @@ namespace FormCapture
                 {
                     await SaveCSV(file);
                     await Notify("Save successful.");
-                } catch
+                }
+                catch
                 {
                     await Notify("An error occurred during the save process.");
                 }
@@ -123,14 +124,30 @@ namespace FormCapture
             var dialog = new ContentDialog
             {
                 CloseButtonText = "Close",
-                Content = new TextBlock { Text = "This app won't share any information transmitted or stored with it, nor will that data be used for any other purpose beyond the services the app provides. The data will furthermore not be retained after it is deleted by the user.", TextWrapping = TextWrapping.WrapWholeWords }
+                Title = "Privacy Policy",
+                Content = "This app won't share any information transmitted or stored with it, nor will that data be used for any other purpose beyond the services the app provides. The data will furthermore not be retained after it is deleted by the user."
             };
             await dialog.ShowAsync();
         }
 
-        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        private async void PodioDownload(object sender, RoutedEventArgs e)
         {
+            if (await NotifyYesNo("This will clear the existing database of both applicants and interviews. Are you sure you want to continue?", "Warning"))
+            {
 
+            }
+        }
+
+        private async void ShowPodioCredentialDialog(object sender, RoutedEventArgs e)
+        {
+            var dialog = new ContentDialog();
+            var dialogContent = new PodioCredentialDialog();
+            dialogContent.CredentialsSaved += delegate
+            {
+                dialog.Hide();
+            };
+            dialog.Content = dialogContent;
+            await dialog.ShowAsync();
         }
     }
 }
