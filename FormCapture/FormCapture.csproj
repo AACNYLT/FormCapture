@@ -99,6 +99,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ApplicantMap.cs" />
+    <Compile Include="Controls\CameraPanel.xaml.cs">
+      <DependentUpon>CameraPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NewApplicant.xaml.cs">
       <DependentUpon>NewApplicant.xaml</DependentUpon>
     </Compile>
@@ -176,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\CameraPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\FormPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

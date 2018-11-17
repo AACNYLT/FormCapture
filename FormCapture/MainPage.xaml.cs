@@ -22,6 +22,8 @@ namespace FormCapture
         private List<Applicant> applicantList;
         private List<Applicant> fullApplicantList;
 
+        public string AppMode = "form";
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -121,6 +123,11 @@ namespace FormCapture
             dialog.CloseButtonText = "Close";
             dialog.Content = new TextBlock { Text = "This app won't share any information transmitted or stored with it, nor will that data be used for any other purpose beyond the services the app provides. The data will furthermore not be retained after it is deleted by the user.", TextWrapping = TextWrapping.WrapWholeWords };
             await dialog.ShowAsync();
+        }
+
+        private void SwitchModes(object sender, RoutedEventArgs e)
+        {
+            AppMode = CameraToggle.IsChecked.Value ? "camera" : "form";
         }
     }
 }
