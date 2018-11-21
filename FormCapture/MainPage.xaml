@@ -5,23 +5,30 @@
     xmlns:local="using:FormCapture"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:FormCapture.Controls"
     mc:Ignorable="d">
 
-    <SplitView Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" IsPaneOpen="True" DisplayMode="Inline">
+    <Page.Resources>
+        <Storyboard x:Name="ExpandPanel">
+            <DoubleAnimation Storyboard.TargetName="MainView" 
+                                 Storyboard.TargetProperty="OpenPaneLength"
+                                 From="320" To="400" Duration="0:0:0.1" EnableDependentAnimation="True">
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="ShrinkPanel">
+            <DoubleAnimation Storyboard.TargetName="MainView" 
+                                 Storyboard.TargetProperty="OpenPaneLength"
+                                 From="400" To="320" Duration="0:0:0.1" EnableDependentAnimation="True">
+            </DoubleAnimation>
+        </Storyboard>
+    </Page.Resources>
+
+    <SplitView x:Name="MainView" Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" IsPaneOpen="True" DisplayMode="Inline">
         <SplitView.Pane>
-            <RelativePanel Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}" Padding="20">
-                <AutoSuggestBox x:Name="Search" QuerySubmitted="ExecuteSearch" QueryIcon="Zoom" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></AutoSuggestBox>
-                <ListView x:Name="ApplicantView" SelectionChanged="ApplicantSelected" ItemsSource="{x:Bind applicantList, Mode=OneWay}" RelativePanel.Below="Search" RelativePanel.Above="ActionBar" RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="true" Margin="0,20,0,0"></ListView>
-                <CommandBar Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" x:Name="ActionBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="true" RelativePanel.AlignBottomWithPanel="True">
-                    <AppBarButton Icon="OpenLocal" Click="OpenCSV" Label="Load Applicants"></AppBarButton>
-                    <AppBarButton Icon="Download" Click="SaveResults" Label="Save Results"></AppBarButton>
-                    <AppBarButton Icon="Add" Click="AddApplicant" Label="Add Applicant"></AppBarButton>
-                    <CommandBar.SecondaryCommands>
-                        <AppBarButton Click="SaveTemplate" Label="Save Template"></AppBarButton>
-                        <AppBarButton Click="ShowPrivacyPolicy" Label="Privacy Policy"></AppBarButton>
-                    </CommandBar.SecondaryCommands>
-                </CommandBar>
-            </RelativePanel>
+            <Grid>
+                <controls:ApplicantList ApplicantClicked="applicantClicked" x:Name="applicantList"></controls:ApplicantList>
+                <controls:ApplicantDetail x:Name="applicantDetail" GoBack="goBack" Visibility="Collapsed"></controls:ApplicantDetail>
+            </Grid>
         </SplitView.Pane>
         <SplitView.Content>
             <Grid Padding="20">

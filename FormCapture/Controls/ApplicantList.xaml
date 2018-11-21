@@ -1,0 +1,35 @@
+﻿<UserControl
+    x:Class="FormCapture.Controls.ApplicantList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FormCapture.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:formcapture="using:FormCapture"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <RelativePanel Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}" Padding="20">
+        <AutoSuggestBox x:Name="Search" QuerySubmitted="ExecuteSearch" QueryIcon="Zoom" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></AutoSuggestBox>
+        <ListView x:Name="ApplicantView" ItemClick="ApplicantSelected" ItemsSource="{x:Bind applicantList, Mode=OneWay}" RelativePanel.Below="Search" RelativePanel.Above="ActionBar" RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="true" Margin="0,20,0,0" SelectionMode="None" IsItemClickEnabled="True">
+            <ListView.ItemTemplate>
+                <DataTemplate x:Name="SingleLineDataTemplate" x:DataType="formcapture:Applicant">
+                    <StackPanel Orientation="Horizontal" Height="44" Padding="12">
+                        <TextBlock x:Name="ApplicantItem" Text="{x:Bind ToString()}" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+                    </StackPanel>
+                </DataTemplate>
+
+            </ListView.ItemTemplate>
+        </ListView>
+        <CommandBar Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" x:Name="ActionBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="true" RelativePanel.AlignBottomWithPanel="True">
+            <AppBarButton Icon="OpenLocal" Click="OpenCSV" Label="Load Applicants"></AppBarButton>
+            <AppBarButton Icon="Download" Click="SaveResults" Label="Save Results"></AppBarButton>
+            <AppBarButton Icon="Add" Click="AddApplicant" Label="Add Applicant"></AppBarButton>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Click="SaveTemplate" Label="Save Template"></AppBarButton>
+                <AppBarButton Click="ShowPrivacyPolicy" Label="Privacy Policy"></AppBarButton>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </RelativePanel>
+</UserControl>
