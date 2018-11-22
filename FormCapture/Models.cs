@@ -19,6 +19,7 @@ namespace FormCapture
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName => FirstName + " " + LastName;
+        public string FileName => FirstName + LastName + "-" + Id;
 
         public Applicant() { }
         public Applicant(string firstName, string lastName, int id)

@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using static FormCapture.Utilities;
+using Windows.System;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -125,6 +126,51 @@ namespace FormCapture.Controls
         {
             ApplicantView.PrepareConnectedAnimation("applicant", e.ClickedItem, "ApplicantItem");
             ApplicantClicked((Applicant)e.ClickedItem);
+        }
+
+        private async void FindFile(Applicant applicant, string filetype)
+        {
+            string extension;
+            StorageFolder folder;
+            switch (filetype)
+            {
+                case "video":
+                    folder = (StorageFolder) await KnownFolders.VideosLibrary.TryGetItemAsync("NYLT Form Capture");
+                    extension = ".mp4";
+                    break;
+                case "photo":
+                    folder = (StorageFolder) await KnownFolders.PicturesLibrary.TryGetItemAsync("NYLT Form Capture");
+                    extension = ".jpg";
+                    break;
+                default:
+                    folder = null;
+                    extension = "";
+                    break;
+            }
+            if (folder != null)
+            {
+                StorageFile file = (StorageFile) await folder.TryGetItemAsync(applicant.FileName + extension);
+                if (file != null)
+                {
+                    await Launcher.LaunchFileAsync(file);
+                } else
+                {
+                    await Notify("We couldn't find the file you're looking for - it may not exist.", "Oops!");
+                }
+            } else
+            {
+                await Notify("We couldn't open the NYLT Form Capture folder - it may not exist.", "Oops!");
+            }
+        }
+
+        private void ViewPhotoInvoked(SwipeItem sender, SwipeItemInvokedEventArgs args)
+        {
+            FindFile((Applicant)args.SwipeControl.DataContext, "photo");
+        }
+
+        private void ViewVideoInvoked(SwipeItem sender, SwipeItemInvokedEventArgs args)
+        {
+            FindFile((Applicant)args.SwipeControl.DataContext, "video");
         }
     }
 }

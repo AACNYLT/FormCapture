@@ -24,6 +24,12 @@ namespace FormCapture
         private void applicantClicked(Applicant applicant)
         {
             ExpandPanel.Begin();
+            ExpandPanel.Completed += delegate
+            {
+                ContentGrid.Opacity = 0;
+                ContentGrid.Content = new InterviewPanel2017(applicant);
+                LoadContentGrid.Begin();
+            };
             applicantList.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             applicantDetail.Visibility = Windows.UI.Xaml.Visibility.Visible;
             applicantDetail.SetApplicant(applicant);
@@ -31,11 +37,20 @@ namespace FormCapture
 
         private void goBack(Applicant applicant)
         {
+            UnloadContentGrid.Begin();
+            UnloadContentGrid.Completed += delegate
+            {
+                ContentGrid.Content = null;
+            };
             ShrinkPanel.Begin();
-
             applicantList.Visibility = Windows.UI.Xaml.Visibility.Visible;
             applicantDetail.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             applicantList.ShowAnimation(applicant);
+        }
+
+        private void MenuButtonClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            MainView.IsPaneOpen = !MainView.IsPaneOpen;
         }
     }
 }

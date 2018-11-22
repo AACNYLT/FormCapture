@@ -21,23 +21,60 @@
                                  From="400" To="320" Duration="0:0:0.1" EnableDependentAnimation="True">
             </DoubleAnimation>
         </Storyboard>
+        <Storyboard x:Name="LoadContentGrid">
+            <DoubleAnimation Storyboard.TargetName="ContentGrid"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.1" EnableDependentAnimation="True"></DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="ContentTransform"
+                             Storyboard.TargetProperty="Y"
+                             From="20" To="0" Duration="0:0:0.2" EnableDependentAnimation="True">
+                <DoubleAnimation.EasingFunction>
+                    <ExponentialEase EasingMode="EaseOut"></ExponentialEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="UnloadContentGrid">
+            <DoubleAnimation Storyboard.TargetName="ContentGrid"
+                             Storyboard.TargetProperty="Opacity"
+                             From="1" To="0" Duration="0:0:0.1" EnableDependentAnimation="True"></DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="ContentTransform"
+                             Storyboard.TargetProperty="Y"
+                             From="0" To="20" Duration="0:0:0.2" EnableDependentAnimation="True">
+                <DoubleAnimation.EasingFunction>
+                    <ExponentialEase EasingMode="EaseOut"></ExponentialEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </Page.Resources>
 
-    <SplitView x:Name="MainView" Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" IsPaneOpen="True" DisplayMode="Inline">
+    <SplitView x:Name="MainView" Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" DisplayMode="CompactOverlay" CompactPaneLength="82">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"></AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MainView.IsPaneOpen" Value="True" />
+                        <Setter Target="MainView.DisplayMode" Value="Inline" />
+                        <Setter Target="Menu.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <SplitView.Pane>
-            <Grid>
-                <controls:ApplicantList ApplicantClicked="applicantClicked" x:Name="applicantList"></controls:ApplicantList>
-                <controls:ApplicantDetail x:Name="applicantDetail" GoBack="goBack" Visibility="Collapsed"></controls:ApplicantDetail>
-            </Grid>
+            <RelativePanel Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}">
+                <Button x:Name="Menu" BorderBrush="Transparent" Click="MenuButtonClick" Background="Transparent" Margin="20,20,0,0" Content="&#xE700;" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" FontFamily="Segoe MDL2 Assets" FontSize="22"></Button>
+                <controls:ApplicantList ApplicantClicked="applicantClicked" x:Name="applicantList" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.RightOf="Menu"></controls:ApplicantList>
+                <controls:ApplicantDetail x:Name="applicantDetail" GoBack="goBack" Visibility="Collapsed" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.RightOf="Menu"></controls:ApplicantDetail>
+            </RelativePanel>
         </SplitView.Pane>
         <SplitView.Content>
             <Grid Padding="20">
                 <ScrollViewer x:Name="ContentGrid">
-                    <ScrollViewer.ContentTransitions>
-                        <TransitionCollection>
-                            <ContentThemeTransition></ContentThemeTransition>
-                        </TransitionCollection>
-                    </ScrollViewer.ContentTransitions>
+                    <ScrollViewer.RenderTransform>
+                        <TranslateTransform x:Name="ContentTransform" Y="20"></TranslateTransform>
+                    </ScrollViewer.RenderTransform>
                 </ScrollViewer>
             </Grid>
         </SplitView.Content>

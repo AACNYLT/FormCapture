@@ -10,14 +10,33 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <RelativePanel Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}" Padding="20">
+    <RelativePanel Padding="20">
         <AutoSuggestBox x:Name="Search" QuerySubmitted="ExecuteSearch" QueryIcon="Zoom" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></AutoSuggestBox>
         <ListView x:Name="ApplicantView" ItemClick="ApplicantSelected" ItemsSource="{x:Bind applicantList, Mode=OneWay}" RelativePanel.Below="Search" RelativePanel.Above="ActionBar" RelativePanel.AlignLeftWithPanel="true" RelativePanel.AlignRightWithPanel="true" Margin="0,20,0,0" SelectionMode="None" IsItemClickEnabled="True">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate x:Name="SingleLineDataTemplate" x:DataType="formcapture:Applicant">
-                    <StackPanel Orientation="Horizontal" Height="44" Padding="12">
-                        <TextBlock x:Name="ApplicantItem" Text="{x:Bind ToString()}" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-                    </StackPanel>
+                    <SwipeControl Height="44" Padding="12">
+                        <SwipeControl.LeftItems>
+                            <SwipeItems Mode="Reveal">
+                                <SwipeItem Invoked="ViewPhotoInvoked" Background="Transparent" Text="View Photo">
+                                    <SwipeItem.IconSource>
+                                        <SymbolIconSource Symbol="Pictures"></SymbolIconSource>
+                                    </SwipeItem.IconSource>
+                                </SwipeItem>
+                                <SwipeItem Invoked="ViewVideoInvoked" Background="Transparent" Text="View Video">
+                                    <SwipeItem.IconSource>
+                                        <SymbolIconSource Symbol="Play"></SymbolIconSource>
+                                    </SwipeItem.IconSource>
+                                </SwipeItem>
+                            </SwipeItems>
+                        </SwipeControl.LeftItems>
+                        <TextBlock x:Name="ApplicantItem" Text="{x:Bind FullName}" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+                    </SwipeControl>
                 </DataTemplate>
 
             </ListView.ItemTemplate>
