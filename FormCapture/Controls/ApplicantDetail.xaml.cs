@@ -105,8 +105,9 @@ namespace FormCapture.Controls
             return;
         }
 
-        private void SwitchCameras(object sender, RoutedEventArgs e)
+        private async void SwitchCameras(object sender, RoutedEventArgs e)
         {
+            await StopPreviewAsync();
             deviceIndex++;
             StartPreviewAsync();
         }
