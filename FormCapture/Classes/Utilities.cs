@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
 
-namespace FormCapture
+namespace FormCapture.Classes
 {
     public static class Utilities
     {

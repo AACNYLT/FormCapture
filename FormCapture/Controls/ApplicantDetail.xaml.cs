@@ -4,7 +4,8 @@ using Windows.System.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
-using static FormCapture.Utilities;
+using static FormCapture.Classes.Utilities;
+using FormCapture.Classes;
 using System;
 using Windows.UI.Core;
 using Windows.Devices.Enumeration;
@@ -130,6 +131,7 @@ namespace FormCapture.Controls
             if (VideoButton.IsChecked.Value)
             {
                 CameraLabel.Text = "wait for it...";
+                Back.IsEnabled = false;
                 SwitchCameraButton.IsEnabled = false;
                 CameraButton.IsEnabled = false;
                 VideoButton.IsEnabled = false;
@@ -150,6 +152,7 @@ namespace FormCapture.Controls
                 CameraLabel.Text = "";
                 SwitchCameraButton.IsEnabled = true;
                 CameraButton.IsEnabled = true;
+                Back.IsEnabled = true;
             }
         }
     }

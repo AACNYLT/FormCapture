@@ -6,8 +6,10 @@ using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
-using static FormCapture.Utilities;
+using static FormCapture.Classes.Utilities;
+using FormCapture.Classes;
 using Windows.System;
+using static FormCapture.Classes.Enumerations;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -128,17 +130,17 @@ namespace FormCapture.Controls
             ApplicantClicked((Applicant)e.ClickedItem);
         }
 
-        private async void FindFile(Applicant applicant, string filetype)
+        private async void FindFile(Applicant applicant, FileType filetype)
         {
             string extension;
             StorageFolder folder;
             switch (filetype)
             {
-                case "video":
+                case FileType.Video:
                     folder = (StorageFolder) await KnownFolders.VideosLibrary.TryGetItemAsync("NYLT Form Capture");
                     extension = ".mp4";
                     break;
-                case "photo":
+                case FileType.Photo:
                     folder = (StorageFolder) await KnownFolders.PicturesLibrary.TryGetItemAsync("NYLT Form Capture");
                     extension = ".jpg";
                     break;
@@ -165,12 +167,12 @@ namespace FormCapture.Controls
 
         private void ViewPhotoInvoked(SwipeItem sender, SwipeItemInvokedEventArgs args)
         {
-            FindFile((Applicant)args.SwipeControl.DataContext, "photo");
+            FindFile((Applicant)args.SwipeControl.DataContext, FileType.Photo);
         }
 
         private void ViewVideoInvoked(SwipeItem sender, SwipeItemInvokedEventArgs args)
         {
-            FindFile((Applicant)args.SwipeControl.DataContext, "video");
+            FindFile((Applicant)args.SwipeControl.DataContext, FileType.Video);
         }
     }
 }

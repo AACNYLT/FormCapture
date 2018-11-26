@@ -2,15 +2,18 @@
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using static FormCapture.Utilities;
+using static FormCapture.Classes.Enumerations;
+using static FormCapture.Classes.Utilities;
+using FormCapture.Classes;
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace FormCapture
 {
-    public sealed partial class InterviewPanel2017 : UserControl
+    public sealed partial class InterviewPanel2017 : UserControl, IPanel
     {
         public Applicant applicant;
         public Interview2017 interview;
+        private bool newInterview;
         public InterviewPanel2017(Applicant _applicant)
         {
             applicant = _applicant;
@@ -19,23 +22,31 @@ namespace FormCapture
             if (results.Count() > 0)
             {
                 interview = results.FirstOrDefault();
+                newInterview = false;
             }
             else
             {
                 interview = new Interview2017 { ApplicantId = applicant.Id };
-
-                context.Interviews.Add(interview);
-                context.SaveChanges();
+                newInterview = true;
             }
             this.InitializeComponent();
         }
 
-        private async void Save(object sender, RoutedEventArgs e)
+        private void SaveClicked(object sender, RoutedEventArgs e)
+        {
+            Save();
+        }
+
+        public async void Save(SaveFormOptions saveBehavior = SaveFormOptions.ShowDialog)
         {
             var context = new FormContext();
-            context.Interviews.Update(interview);
+
+            if (newInterview) { context.Interviews.Add(interview); } else { context.Interviews.Update(interview); }
             await context.SaveChangesAsync();
-            await Notify("Interview saved.");
+            if (saveBehavior == SaveFormOptions.ShowDialog)
+            {
+                await Notify("Interview saved.");
+            }
         }
     }
 }

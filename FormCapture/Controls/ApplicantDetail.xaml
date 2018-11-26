@@ -12,10 +12,10 @@
     <RelativePanel Padding="20">
         <Button x:Name="Back" Click="Back_Click" Style="{ThemeResource NavigationBackButtonNormalStyle}" Padding="0,0,0,0" Width="42" Height="34" Margin="0,0,10,0"/>
         <TextBlock x:Name="ApplicantHeader" Text="{x:Bind applicant.ToString()}" TextWrapping="NoWrap" RelativePanel.RightOf="Back" FontSize="26" Height="34" VerticalAlignment="Center"/>
-        <Grid RelativePanel.Below="Back" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="0,20,0,0">
+        <Grid RelativePanel.Below="Back"  RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="0,20,0,0">
             <ScrollViewer>
                 <StackPanel>
-                    <RelativePanel x:Name="captureContainer" Height="360">
+                    <RelativePanel x:Name="captureContainer" Height="0">
                         <CaptureElement x:Name="captureElement" Stretch="Uniform" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></CaptureElement>
                         <ProgressRing x:Name="captureRing" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"></ProgressRing>
                     </RelativePanel>

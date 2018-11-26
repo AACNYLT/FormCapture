@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace FormCapture
+namespace FormCapture.Classes
 {
     public class FormContext : DbContext
     {

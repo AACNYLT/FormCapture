@@ -1,4 +1,5 @@
-﻿namespace FormCapture
+﻿using FormCapture.Classes;
+namespace FormCapture
 {
     public class ApplicantMap: CsvHelper.Configuration.CsvClassMap<Applicant>
     {

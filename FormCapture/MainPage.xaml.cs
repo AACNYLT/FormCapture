@@ -1,6 +1,7 @@
 ﻿using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
+using FormCapture.Classes;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -37,6 +38,7 @@ namespace FormCapture
 
         private void goBack(Applicant applicant)
         {
+            ((IPanel)ContentGrid.Content).Save(Enumerations.SaveFormOptions.SuppressDialog);
             UnloadContentGrid.Begin();
             UnloadContentGrid.Completed += delegate
             {
