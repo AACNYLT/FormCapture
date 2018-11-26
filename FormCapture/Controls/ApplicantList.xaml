@@ -42,11 +42,33 @@
             </ListView.ItemTemplate>
         </ListView>
         <CommandBar Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" x:Name="ActionBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="true" RelativePanel.AlignBottomWithPanel="True">
-            <AppBarButton Icon="OpenLocal" Click="OpenCSV" Label="Load Applicants"></AppBarButton>
-            <AppBarButton Icon="Download" Click="SaveResults" Label="Save Results"></AppBarButton>
+            <CommandBar.Content>
+                <RelativePanel Height="48" Padding="10">
+                    <ProgressRing x:Name="Loading" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" />
+                </RelativePanel>
+            </CommandBar.Content>
+            <AppBarButton Icon="Globe" Label="Podio">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Icon="Download" Click="PodioDownload" Text="Download from Podio"></MenuFlyoutItem>
+                        <MenuFlyoutItem Icon="Upload" Text="Upload Results to Podio"></MenuFlyoutItem>
+                        <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                        <MenuFlyoutItem Icon="Permissions" Click="ShowPodioCredentialDialog" Text="Save Podio Credentials"></MenuFlyoutItem>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton Icon="NewFolder" Label="Local Files">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Icon="OpenLocal" Click="OpenCSV" Text="Load Applicants from CSV"></MenuFlyoutItem>
+                        <MenuFlyoutItem Icon="Save" Click="SaveResults" Text="Save Results to CSV"></MenuFlyoutItem>
+                        <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                        <MenuFlyoutItem Icon="Document" Click="SaveTemplate" Text="Save CSV Template"></MenuFlyoutItem>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
             <AppBarButton Icon="Add" Click="AddApplicant" Label="Add Applicant"></AppBarButton>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Click="SaveTemplate" Label="Save Template"></AppBarButton>
                 <AppBarButton Click="ShowPrivacyPolicy" Label="Privacy Policy"></AppBarButton>
             </CommandBar.SecondaryCommands>
         </CommandBar>

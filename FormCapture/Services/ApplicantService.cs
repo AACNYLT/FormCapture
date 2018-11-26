@@ -2,7 +2,7 @@
 using System.Linq;
 using FormCapture.Classes;
 
-namespace FormCapture
+namespace FormCapture.Services
 {
     static class ApplicantService
     {

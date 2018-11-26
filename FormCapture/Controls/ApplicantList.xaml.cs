@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using static FormCapture.Classes.Utilities;
 using FormCapture.Classes;
+using FormCapture.Services;
 using Windows.System;
 using static FormCapture.Classes.Enumerations;
 
@@ -137,11 +138,11 @@ namespace FormCapture.Controls
             switch (filetype)
             {
                 case FileType.Video:
-                    folder = (StorageFolder) await KnownFolders.VideosLibrary.TryGetItemAsync("NYLT Form Capture");
+                    folder = (StorageFolder)await KnownFolders.VideosLibrary.TryGetItemAsync("NYLT Form Capture");
                     extension = ".mp4";
                     break;
                 case FileType.Photo:
-                    folder = (StorageFolder) await KnownFolders.PicturesLibrary.TryGetItemAsync("NYLT Form Capture");
+                    folder = (StorageFolder)await KnownFolders.PicturesLibrary.TryGetItemAsync("NYLT Form Capture");
                     extension = ".jpg";
                     break;
                 default:
@@ -151,15 +152,17 @@ namespace FormCapture.Controls
             }
             if (folder != null)
             {
-                StorageFile file = (StorageFile) await folder.TryGetItemAsync(applicant.FileName + extension);
+                StorageFile file = (StorageFile)await folder.TryGetItemAsync(applicant.FileName + extension);
                 if (file != null)
                 {
                     await Launcher.LaunchFileAsync(file);
-                } else
+                }
+                else
                 {
                     await Notify("We couldn't find the file you're looking for - it may not exist.", "Oops!");
                 }
-            } else
+            }
+            else
             {
                 await Notify("We couldn't open the NYLT Form Capture folder - it may not exist.", "Oops!");
             }
@@ -173,6 +176,43 @@ namespace FormCapture.Controls
         private void ViewVideoInvoked(SwipeItem sender, SwipeItemInvokedEventArgs args)
         {
             FindFile((Applicant)args.SwipeControl.DataContext, FileType.Video);
+        }
+
+        private async void PodioDownload(object sender, RoutedEventArgs e)
+        {
+            if (await NotifyYesNo("This will clear the existing database of both applicants and interviews. Are you sure you want to continue?", "Warning"))
+            {
+                Loading.IsActive = true;
+                try
+                {
+                    await PodioService.GetApplicants(async (string FirstNameMapping, string LastNameMapping, IEnumerable<PodioAPI.Models.Item> itemResults) => {
+                        var applicants = new List<Applicant>();
+                        foreach (var item in itemResults)
+                        {
+                            applicants.Add(new Applicant
+                            {
+                                Id = item.ItemId,
+                                FirstName = item.Fields.Where(n => n.Label == FirstNameMapping).First().Values.First().First().ToObject<String>(),
+                                LastName = item.Fields.Where(n => n.Label == LastNameMapping).First().Values.First().First().ToObject<String>(),
+                            });
+                        }
+                        await ProcessApplicants(applicants);
+                        loadApplicants();
+                        Loading.IsActive = false;
+                        await Notify("Download complete.", "Success");
+                    });
+                }
+                catch
+                {
+                    Loading.IsActive = false;
+                    await Notify("We encountered an issue downloading applicants from Podio.", "Error");
+                }
+            }
+        }
+
+        private async void ShowPodioCredentialDialog(object sender, RoutedEventArgs e)
+        {
+            await Utilities.ShowPodioCredentialDialog();
         }
     }
 }

@@ -1,9 +1,12 @@
-﻿using System;
+﻿using FormCapture.Controls;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls;
 
 namespace FormCapture.Classes
 {
@@ -16,14 +19,20 @@ namespace FormCapture.Classes
                 var csv = new CsvHelper.CsvReader(new StreamReader(fileStream));
                 csv.Configuration.RegisterClassMap<ApplicantMap>();
                 var results = csv.GetRecords<Applicant>().ToList();
-                var context = new FormContext();
-                context.Applicants.RemoveRange(context.Applicants.ToList());
-                context.Interviews.RemoveRange(context.Interviews.ToList());
-                await context.SaveChangesAsync();
-                await context.Applicants.AddRangeAsync(results);
-                await context.SaveChangesAsync();
+                await ProcessApplicants(results);
                 return;
             }
+        }
+
+        public static async Task ProcessApplicants(List<Applicant> applicants)
+        {
+            var context = new FormContext();
+            context.Applicants.RemoveRange(context.Applicants.ToList());
+            context.Interviews.RemoveRange(context.Interviews.ToList());
+            await context.SaveChangesAsync();
+            await context.Applicants.AddRangeAsync(applicants);
+            await context.SaveChangesAsync();
+            return;
         }
 
         public static async Task Notify(string message)
@@ -38,6 +47,30 @@ namespace FormCapture.Classes
             var Notifier = new MessageDialog(message, title);
             await Notifier.ShowAsync();
             return;
+        }
+
+        public static async Task<Boolean> NotifyYesNo(string message, string title)
+        {
+            var Notifier = new MessageDialog(message, title);
+            var result = false;
+            Notifier.Commands.Add(new UICommand("Yes", delegate { result = true; }));
+            Notifier.Commands.Add(new UICommand("No", delegate { result = false; }));
+            Notifier.CancelCommandIndex = 1;
+            await Notifier.ShowAsync();
+            return result;
+        }
+
+        public static async Task ShowPodioCredentialDialog()
+        {
+            var dialog = new ContentDialog();
+            var dialogContent = new PodioCredentialDialog();
+            dialogContent.CredentialsSaved += delegate
+            {
+                dialog.Hide();
+                return;
+            };
+            dialog.Content = dialogContent;
+            await dialog.ShowAsync();
         }
 
         public static async Task SaveCSV(StorageFile file)

@@ -104,6 +104,7 @@
     <Compile Include="ApplicantMap.cs" />
     <Compile Include="Classes\Enumerations.cs" />
     <Compile Include="Classes\IPanel.cs" />
+    <Compile Include="Classes\Secrets.cs" />
     <Compile Include="Controls\ApplicantDetail.xaml.cs">
       <DependentUpon>ApplicantDetail.xaml</DependentUpon>
     </Compile>
@@ -113,13 +114,19 @@
     <Compile Include="Controls\NewApplicant.xaml.cs">
       <DependentUpon>NewApplicant.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PodioConfigDialog.xaml.cs">
+      <DependentUpon>PodioConfigDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PodioCredentialDialog.xaml.cs">
+      <DependentUpon>PodioCredentialDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\20171130032132_initial.cs" />
     <Compile Include="Migrations\20171130032132_initial.designer.cs">
       <DependentUpon>20171130032132_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\FormContextModelSnapshot.cs" />
     <Compile Include="Classes\Models.cs" />
-    <Compile Include="ApplicantService.cs" />
+    <Compile Include="Services\ApplicantService.cs" />
     <Compile Include="FormElement.cs" />
     <Compile Include="Controls\FormPanel.xaml.cs">
       <DependentUpon>FormPanel.xaml</DependentUpon>
@@ -132,6 +139,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\Utilities.cs" />
+    <Compile Include="Services\PodioService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -207,6 +215,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\PodioConfigDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PodioCredentialDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -224,6 +240,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>5.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="Podio.Async">
+      <Version>2.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
