@@ -214,5 +214,22 @@ namespace FormCapture.Controls
         {
             await Utilities.ShowPodioCredentialDialog();
         }
+
+        private async void PodioUpload(object sender, RoutedEventArgs e)
+        {
+            Loading.IsActive = true;
+            try
+            {
+                var context = new FormContext();
+                await PodioService.Upload2017Interviews(context.Interviews.ToList());
+                Loading.IsActive = false;
+                await Notify("Your interviews are now saved in Podio.", "Upload Complete");
+            } catch (Exception ex)
+            {
+                Loading.IsActive = false;
+                await Notify("We encountered an issue uploading to Podio.", "Error");
+            }
+
+        }
     }
 }

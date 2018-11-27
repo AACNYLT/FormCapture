@@ -40,8 +40,15 @@ namespace FormCapture
         public async void Save(SaveFormOptions saveBehavior = SaveFormOptions.ShowDialog)
         {
             var context = new FormContext();
-
-            if (newInterview) { context.Interviews.Add(interview); } else { context.Interviews.Update(interview); }
+            if (newInterview)
+            {
+                if (saveBehavior != SaveFormOptions.SuppressDialog)
+                {
+                    context.Interviews.Add(interview);
+                    newInterview = false;
+                }
+            }
+            else { context.Interviews.Update(interview); }
             await context.SaveChangesAsync();
             if (saveBehavior == SaveFormOptions.ShowDialog)
             {
