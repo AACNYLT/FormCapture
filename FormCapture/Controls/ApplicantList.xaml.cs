@@ -185,24 +185,13 @@ namespace FormCapture.Controls
                 Loading.IsActive = true;
                 try
                 {
-                    await PodioService.GetApplicants(async (string FirstNameMapping, string LastNameMapping, IEnumerable<PodioAPI.Models.Item> itemResults) => {
-                        var applicants = new List<Applicant>();
-                        foreach (var item in itemResults)
-                        {
-                            applicants.Add(new Applicant
-                            {
-                                Id = item.ItemId,
-                                FirstName = item.Fields.Where(n => n.Label == FirstNameMapping).First().Values.First().First().ToObject<String>(),
-                                LastName = item.Fields.Where(n => n.Label == LastNameMapping).First().Values.First().First().ToObject<String>(),
-                            });
-                        }
-                        await ProcessApplicants(applicants);
-                        loadApplicants();
-                        Loading.IsActive = false;
-                        await Notify("Download complete.", "Success");
-                    });
+                    var applicants = await PodioService.GetApplicants();
+                    await ProcessApplicants(applicants);
+                    loadApplicants();
+                    Loading.IsActive = false;
+                    await Notify("Download complete.", "Success");
                 }
-                catch
+                catch (Exception ex)
                 {
                     Loading.IsActive = false;
                     await Notify("We encountered an issue downloading applicants from Podio.", "Error");

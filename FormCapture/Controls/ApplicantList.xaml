@@ -47,7 +47,7 @@
                     <ProgressRing x:Name="Loading" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" />
                 </RelativePanel>
             </CommandBar.Content>
-            <AppBarButton Icon="Globe" Label="Podio">
+            <!--<AppBarButton Icon="Globe" Label="Podio">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem Icon="Download" Click="PodioDownload" Text="Download from Podio"></MenuFlyoutItem>
@@ -56,7 +56,7 @@
                         <MenuFlyoutItem Icon="Permissions" Click="ShowPodioCredentialDialog" Text="Save Podio Credentials"></MenuFlyoutItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
-            </AppBarButton>
+            </AppBarButton>-->
             <AppBarButton Icon="NewFolder" Label="Local Files">
                 <AppBarButton.Flyout>
                     <MenuFlyout>

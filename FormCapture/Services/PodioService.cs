@@ -1,5 +1,4 @@
 ﻿using FormCapture.Classes;
-using FormCapture.Controls;
 using PodioAPI;
 using PodioAPI.Models;
 using PodioAPI.Utils.ItemFields;
@@ -9,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.UI.Xaml.Controls;
 
 namespace FormCapture.Services
 {
@@ -19,32 +17,41 @@ namespace FormCapture.Services
         {
             var podio = new Podio("nyltformcapture", Secrets.PodioAppSecret);
             var vault = new Windows.Security.Credentials.PasswordVault();
-            if (vault.FindAllByResource("nyltformcapture").Count == 0)
+            //if (vault.FindAllByResource("nyltformcapture").Count == 0)
+            //{
+            //    await Utilities.ShowPodioCredentialDialog();
+            //}
+            var credentials = vault.FindAllByResource("nyltformcapture");
+            if (credentials.Count > 0)
             {
-                await Utilities.ShowPodioCredentialDialog();
+                var credential = credentials.FirstOrDefault();
+                credential.RetrievePassword();
+                await podio.AuthenticateWithPassword(credential.UserName, credential.Password);
+                return podio;
             }
-            var credentials = vault.FindAllByResource("nyltformcapture").First();
-            credentials.RetrievePassword();
-            await podio.AuthenticateWithPassword(credentials.UserName, credentials.Password);
-            return podio;
+            throw new Exception("There are no relevant credentials stored.");
         }
 
-        public static async System.Threading.Tasks.Task GetApplicants(Action<string,string, IEnumerable<PodioAPI.Models.Item>> onComplete)
+        private static readonly string FirstNameMapping = "Preferred Name";
+        private static readonly string LastNameMapping = "Last Name";
+
+        public static async Task<List<Applicant>> GetApplicants()
         {
             var podio = await AuthenticatePodio();
             var itemResults = (await podio.ItemService.FilterItems(21458112, new PodioAPI.Models.Request.FilterOptions() {
                 Limit = 200
             })).Items;
-            var dialog = new ContentDialog();
-            var dialogContent = new PodioConfigDialog();
-            dialogContent.FieldMappingComplete += (string FirstNameMapping, string LastNameMapping) =>
+            var applicants = new List<Applicant>();
+            foreach (var item in itemResults)
             {
-                dialog.Hide();
-                onComplete(FirstNameMapping, LastNameMapping, itemResults);
-            };
-            dialog.Content = dialogContent;
-            await dialog.ShowAsync();
-            return;
+                applicants.Add(new Applicant
+                {
+                    Id = item.ItemId,
+                    FirstName = item.Fields.Where(n => n.Label == FirstNameMapping).First().Values.First().First().ToObject<String>(),
+                    LastName = item.Fields.Where(n => n.Label == LastNameMapping).First().Values.First().First().ToObject<String>(),
+                });
+            }
+            return applicants;
         }
 
         public static async System.Threading.Tasks.Task Upload2017Interviews(List<Interview2017> interviews)
@@ -87,5 +94,6 @@ namespace FormCapture.Services
             }
             return;
         }
+        
     }
 }
