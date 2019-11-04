@@ -19,12 +19,12 @@
                         <CaptureElement x:Name="captureElement" Stretch="Uniform" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></CaptureElement>
                         <ProgressRing x:Name="captureRing" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"></ProgressRing>
                     </RelativePanel>
-                    <CommandBar x:Name="CameraBar" Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" FontFamily="Segoe UI">
+                    <CommandBar x:Name="CameraBar" Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" FontFamily="Segoe UI" VerticalAlignment="Stretch">
                         <AppBarButton x:Name="CameraButton" Icon="Camera" Click="TakePhoto" Label="Take Photo" />
                         <AppBarToggleButton x:Name="VideoButton" Click="ToggleRecording" Icon="Video" Label="Record" />
                         <AppBarButton x:Name="SwitchCameraButton" Icon="RotateCamera" Click="SwitchCameras" Label="Switch Cameras" />
                         <CommandBar.Content>
-                            <RelativePanel Height="48">
+                            <RelativePanel Height="40">
                                 <TextBlock x:Name="CameraLabel" Margin="10,0,0,0" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"></TextBlock>
                             </RelativePanel>
                         </CommandBar.Content>

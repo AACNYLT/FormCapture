@@ -15,7 +15,8 @@ namespace FormCapture.Services
     {
         private static async Task<Podio> AuthenticatePodio()
         {
-            var podio = new Podio("nyltformcapture", Secrets.PodioAppSecret);
+            //var podio = new Podio("nyltformcapture", Secrets.PodioAppSecret);
+            var podio = new Podio("nyltformcapture", "hello");
             var vault = new Windows.Security.Credentials.PasswordVault();
             //if (vault.FindAllByResource("nyltformcapture").Count == 0)
             //{

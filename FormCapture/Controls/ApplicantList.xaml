@@ -41,7 +41,7 @@
 
             </ListView.ItemTemplate>
         </ListView>
-        <CommandBar Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" x:Name="ActionBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="true" RelativePanel.AlignBottomWithPanel="True">
+        <CommandBar IsOpen="False" OverflowButtonVisibility="Collapsed" IsSticky="True" Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" x:Name="ActionBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="true" RelativePanel.AlignBottomWithPanel="True" DefaultLabelPosition="Right">
             <CommandBar.Content>
                 <RelativePanel Height="48" Padding="10">
                     <ProgressRing x:Name="Loading" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" />
@@ -57,7 +57,7 @@
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>-->
-            <AppBarButton Icon="NewFolder" Label="Local Files">
+            <AppBarButton Icon="NewFolder" Label="Data" >
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem Icon="OpenLocal" Click="OpenCSV" Text="Load Applicants from CSV"></MenuFlyoutItem>
@@ -67,10 +67,16 @@
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton Icon="Add" Click="AddApplicant" Label="Add Applicant"></AppBarButton>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Click="ShowPrivacyPolicy" Label="Privacy Policy"></AppBarButton>
-            </CommandBar.SecondaryCommands>
+            <AppBarButton Icon="Add" Click="AddApplicant" AllowFocusOnInteraction="True" ToolTipService.ToolTip="Add Applicant"/>
+            <AppBarButton Icon="Sort" ToolTipService.ToolTip="Sort">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="First Name" />
+                        <MenuFlyoutItem Text="Last Name" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton Click="ShowPrivacyPolicy" ToolTipService.ToolTip="Privacy Policy" Icon="ReportHacked" />
         </CommandBar>
     </RelativePanel>
 </UserControl>

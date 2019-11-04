@@ -19,11 +19,14 @@ namespace FormCapture.Controls
 
         private async void AddApplicantClick(object sender, RoutedEventArgs e)
         {
-            var applicant = new Applicant(FirstName.Text, LastName.Text, int.Parse(ApplicantID.Text));
-            var context = new FormContext();
-            context.Applicants.Add(applicant);
-            await context.SaveChangesAsync();
-            ApplicantCreated();
+            if (FirstName.Text != "" && LastName.Text != "" && ApplicantID.Text != "")
+            {
+                var applicant = new Applicant(FirstName.Text, LastName.Text, int.Parse(ApplicantID.Text));
+                var context = new FormContext();
+                context.Applicants.Add(applicant);
+                await context.SaveChangesAsync();
+                ApplicantCreated();
+            }
         }
     }
 }

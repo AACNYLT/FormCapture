@@ -102,17 +102,18 @@ namespace FormCapture.Controls
             }
         }
 
-        private async void AddApplicant(object sender, RoutedEventArgs e)
+        private void AddApplicant(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog();
+            var dialog = new Flyout();
             var dialogContent = new NewApplicant();
+            dialogContent.Width = 200;
             dialogContent.ApplicantCreated += delegate
             {
                 dialog.Hide();
                 loadApplicants();
             };
             dialog.Content = dialogContent;
-            await dialog.ShowAsync();
+            dialog.ShowAt(sender as FrameworkElement);
         }
 
         private async void ShowPrivacyPolicy(object sender, RoutedEventArgs e)

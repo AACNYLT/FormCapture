@@ -32,6 +32,10 @@ namespace FormCapture.Controls
         public ApplicantDetail()
         {
             this.InitializeComponent();
+            Application.Current.Suspending += async delegate
+            {
+                await StopRecording();
+            };
         }
 
         public void SetApplicant(Applicant applicant)
@@ -118,12 +122,36 @@ namespace FormCapture.Controls
             CameraButton.IsEnabled = false;
             captureRing.IsActive = true;
             var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("NYLT Form Capture", CreationCollisionOption.OpenIfExists);
-            var file = await folder.CreateFileAsync(applicant.FileName + ".jpg", CreationCollisionOption.ReplaceExisting);
+            try
+            {
+                var file = await folder.CreateFileAsync(applicant.FileName + ".jpg", CreationCollisionOption.FailIfExists);
+                PerformPhotoCapture(file);
+            } catch
+            {
+                var overwrite = await NotifyYesNo("This applicant already has a photo. Do you want to overwrite it? Pressing Yes will take the photo.", "Photo Already Exists");
+                if(overwrite)
+                {
+                    var file = await folder.CreateFileAsync(applicant.FileName + ".jpg", CreationCollisionOption.ReplaceExisting);
+                    PerformPhotoCapture(file);
+                }
+                else
+                {
+                    captureRing.IsActive = false;
+                    CameraButton.IsEnabled = true;
+                    CameraLabel.Foreground = new Windows.UI.Xaml.Media.SolidColorBrush(Colors.Black);
+                }
+            }
+
+        }
+
+        private async void PerformPhotoCapture(StorageFile file)
+        {
             await mediaCapture.CapturePhotoToStorageFileAsync(ImageEncodingProperties.CreateJpeg(), file);
             captureRing.IsActive = false;
             CameraButton.IsEnabled = true;
             CameraLabel.Foreground = new Windows.UI.Xaml.Media.SolidColorBrush(Colors.Black);
-            CameraLabel.Text = "photo taken";
+            ShowTemporaryStatus("photo taken", 1.0);
+            //CameraLabel.Text = "photo taken";
         }
 
         private async void ToggleRecording(object sender, RoutedEventArgs e)
@@ -136,7 +164,7 @@ namespace FormCapture.Controls
                 CameraButton.IsEnabled = false;
                 VideoButton.IsEnabled = false;
                 var folder = await KnownFolders.VideosLibrary.CreateFolderAsync("NYLT Form Capture", CreationCollisionOption.OpenIfExists);
-                var file = await folder.CreateFileAsync(applicant.FileName + ".mp4", CreationCollisionOption.ReplaceExisting);
+                var file = await folder.CreateFileAsync(applicant.FileName + ".mp4", CreationCollisionOption.GenerateUniqueName);
                 await mediaCapture.StartRecordToStorageFileAsync(MediaEncodingProfile.CreateMp4(VideoEncodingQuality.HD720p), file);
                 CameraLabel.Foreground = new Windows.UI.Xaml.Media.SolidColorBrush(Colors.Red);
                 CameraLabel.Text = "recording";
@@ -144,6 +172,14 @@ namespace FormCapture.Controls
                 VideoButton.IsEnabled = true;
             }
             else
+            {
+                await StopRecording();
+            }
+        }
+
+        private async Task StopRecording()
+        {
+            if (!VideoButton.IsChecked.Value)
             {
                 CameraLabel.Foreground = new Windows.UI.Xaml.Media.SolidColorBrush(Colors.Black);
                 CameraLabel.Text = "saving";
@@ -154,6 +190,19 @@ namespace FormCapture.Controls
                 CameraButton.IsEnabled = true;
                 Back.IsEnabled = true;
             }
+        }
+
+        private void ShowTemporaryStatus(string status, double delay)
+        {
+            CameraLabel.Text = status;
+//            Task.Run(() =>
+//            {
+//                Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+//() =>
+//{
+//CameraLabel.Text = ""}
+//);
+//            }).Wait(TimeSpan.FromSeconds(delay));
         }
     }
 }
