@@ -12,6 +12,7 @@ using Windows.Devices.Enumeration;
 using Windows.Storage;
 using Windows.Media.MediaProperties;
 using Windows.UI;
+using Windows.UI.Core.Preview;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -23,7 +24,7 @@ namespace FormCapture.Controls
         MediaCapture mediaCapture;
         bool isPreviewing;
         bool isRecording;
-        DisplayRequest displayRequest = new DisplayRequest();
+        private DisplayRequest displayRequest = new DisplayRequest();
         private int deviceIndex = 0;
 
         public event GoBackHandler GoBack;
@@ -32,10 +33,10 @@ namespace FormCapture.Controls
         public ApplicantDetail()
         {
             this.InitializeComponent();
-            Application.Current.Suspending += async delegate
-            {
-                await StopRecording();
-            };
+            //Application.Current.Suspending += async delegate
+            //{
+            //    await StopRecording();
+            //};
         }
 
         public void SetApplicant(Applicant applicant)

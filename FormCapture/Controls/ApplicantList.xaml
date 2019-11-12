@@ -60,10 +60,16 @@
             <AppBarButton Icon="NewFolder" Label="Data" >
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Icon="OpenLocal" Click="OpenCSV" Text="Load Applicants from CSV"></MenuFlyoutItem>
+                        <MenuFlyoutSubItem Icon="MapDrive" Text="Local Files">
+                            <MenuFlyoutItem Icon="OpenLocal" Click="OpenCSV" Text="Load Applicants from CSV"></MenuFlyoutItem>
                         <MenuFlyoutItem Icon="Save" Click="SaveResults" Text="Save Results to CSV"></MenuFlyoutItem>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
                         <MenuFlyoutItem Icon="Document" Click="SaveTemplate" Text="Save CSV Template"></MenuFlyoutItem>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSubItem Icon="Globe" Text="Remote Server">
+                            <MenuFlyoutItem Icon="Download" Text="Download Applicants" />
+                            <MenuFlyoutItem Icon="Upload" Text="Upload Interviews" />
+                        </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -71,8 +77,8 @@
             <AppBarButton Icon="Sort" ToolTipService.ToolTip="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="First Name" />
-                        <MenuFlyoutItem Text="Last Name" />
+                        <MenuFlyoutItem Click="SortByFirstName" Text="First Name" />
+                        <MenuFlyoutItem Click="SortByLastName" Text="Last Name" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

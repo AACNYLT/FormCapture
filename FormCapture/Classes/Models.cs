@@ -54,4 +54,13 @@ namespace FormCapture.Classes
         public string RecommendedPosition { get; set; }
         public bool Recommend { get; set; }
     }
+
+    public enum SortBy
+    {
+        DEFAULT,
+        FNAME_ASC,
+        LNAME_ASC,
+        FNAME_DSC,
+        LNAME_DSC
+    }
 }

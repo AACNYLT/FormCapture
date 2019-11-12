@@ -111,6 +111,9 @@
     <Compile Include="Controls\ApplicantList.xaml.cs">
       <DependentUpon>ApplicantList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CRUDDownloadDialog.xaml.cs">
+      <DependentUpon>CRUDDownloadDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NewApplicant.xaml.cs">
       <DependentUpon>NewApplicant.xaml</DependentUpon>
     </Compile>
@@ -203,6 +206,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CRUDDownloadDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\FormPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -240,6 +247,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>5.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="NYLT.RestController">
+      <Version>1.3.1</Version>
     </PackageReference>
     <PackageReference Include="Podio.Async">
       <Version>2.0.1</Version>

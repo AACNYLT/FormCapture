@@ -19,7 +19,7 @@ namespace FormCapture
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             titleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
-            this.applicantList.loadApplicants();
+            this.applicantList.LoadApplicants();
         }
 
         private void applicantClicked(Applicant applicant)

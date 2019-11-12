@@ -20,6 +20,7 @@ namespace FormCapture.Controls
     {
         private List<Applicant> applicantList;
         private List<Applicant> fullApplicantList;
+        private SortBy sortBy = SortBy.DEFAULT;
 
         public event ApplicantClickedHandler ApplicantClicked;
         public delegate void ApplicantClickedHandler(Applicant applicant);
@@ -38,10 +39,42 @@ namespace FormCapture.Controls
             }
         }
 
-        public void loadApplicants()
+        public void LoadApplicants()
         {
             fullApplicantList = ApplicantService.getApplicants();
             applicantList = fullApplicantList;
+            Bindings.Update();
+        }
+
+        public void SortApplicants()
+        {
+            switch (sortBy)
+            {
+                case SortBy.FNAME_ASC:
+                    {
+                        applicantList = applicantList.OrderBy(n => n.FirstName).ToList();
+                        break;
+                    }
+                case SortBy.LNAME_ASC:
+                    {
+                        applicantList = applicantList.OrderBy(n => n.LastName).ToList();
+                        break;
+                    }
+                case SortBy.FNAME_DSC:
+                    {
+                        applicantList = applicantList.OrderByDescending(n => n.FirstName).ToList();
+                        break;
+                    }
+                case SortBy.LNAME_DSC:
+                    {
+                        applicantList = applicantList.OrderByDescending(n => n.LastName).ToList();
+                        break;
+                    }
+                default: 
+                    {
+                        break;
+                    }
+            }
             Bindings.Update();
         }
 
@@ -56,7 +89,7 @@ namespace FormCapture.Controls
                 {
                     await ProcessCSV(file);
                     await Notify("Import complete.");
-                    loadApplicants();
+                    LoadApplicants();
                 }
                 catch
                 {
@@ -68,7 +101,7 @@ namespace FormCapture.Controls
         private void ExecuteSearch(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             applicantList = fullApplicantList.Where(n => n.FullName.ToLower().Contains(Search.Text.ToLower()) || n.Id.ToString().Contains(Search.Text)).ToList();
-            Bindings.Update();
+            SortApplicants();
         }
 
         private async void SaveResults(object sender, RoutedEventArgs e)
@@ -105,12 +138,14 @@ namespace FormCapture.Controls
         private void AddApplicant(object sender, RoutedEventArgs e)
         {
             var dialog = new Flyout();
-            var dialogContent = new NewApplicant();
-            dialogContent.Width = 200;
+            var dialogContent = new NewApplicant
+            {
+                Width = 200
+            };
             dialogContent.ApplicantCreated += delegate
             {
                 dialog.Hide();
-                loadApplicants();
+                LoadApplicants();
             };
             dialog.Content = dialogContent;
             dialog.ShowAt(sender as FrameworkElement);
@@ -188,7 +223,7 @@ namespace FormCapture.Controls
                 {
                     var applicants = await PodioService.GetApplicants();
                     await ProcessApplicants(applicants);
-                    loadApplicants();
+                    LoadApplicants();
                     Loading.IsActive = false;
                     await Notify("Download complete.", "Success");
                 }
@@ -214,12 +249,38 @@ namespace FormCapture.Controls
                 await PodioService.Upload2017Interviews(context.Interviews.ToList());
                 Loading.IsActive = false;
                 await Notify("Your interviews are now saved in Podio.", "Upload Complete");
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Loading.IsActive = false;
                 await Notify("We encountered an issue uploading to Podio.", "Error");
             }
 
+        }
+
+        private void SortByFirstName(object sender, RoutedEventArgs e)
+        {
+            if (sortBy == SortBy.FNAME_ASC)
+            {
+                sortBy = SortBy.FNAME_DSC;
+            } else
+            {
+                sortBy = SortBy.FNAME_ASC;
+            }
+            SortApplicants();
+        }
+
+        private void SortByLastName(object sender, RoutedEventArgs e)
+        {
+            if (sortBy == SortBy.LNAME_ASC)
+            {
+                sortBy = SortBy.LNAME_DSC;
+            }
+            else
+            {
+                sortBy = SortBy.LNAME_ASC;
+            }
+            SortApplicants();
         }
     }
 }
