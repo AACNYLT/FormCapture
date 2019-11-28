@@ -47,7 +47,7 @@
         </Storyboard>
     </Page.Resources>
 
-    <SplitView x:Name="MainView" Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}" DisplayMode="CompactOverlay" CompactPaneLength="82">
+    <SplitView x:Name="MainView" DisplayMode="CompactOverlay" CompactPaneLength="82">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
