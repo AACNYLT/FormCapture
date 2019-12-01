@@ -70,7 +70,7 @@ namespace FormCapture.Controls
                         applicantList = applicantList.OrderByDescending(n => n.LastName).ToList();
                         break;
                     }
-                default: 
+                default:
                     {
                         break;
                     }
@@ -153,12 +153,7 @@ namespace FormCapture.Controls
 
         private async void ShowPrivacyPolicy(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog
-            {
-                CloseButtonText = "Close",
-                Content = new TextBlock { Text = "This app won't share any information transmitted or stored with it, nor will that data be used for any other purpose beyond the services the app provides. The data will furthermore not be retained after it is deleted by the user.", TextWrapping = TextWrapping.WrapWholeWords }
-            };
-            await dialog.ShowAsync();
+            await Notify("This app won't share any information transmitted or stored with it, nor will that data be used for any other purpose beyond the services the app provides. The data will furthermore not be retained after it is deleted by the user.");
         }
 
         private void ApplicantSelected(object sender, ItemClickEventArgs e)
@@ -214,25 +209,25 @@ namespace FormCapture.Controls
             FindFile((Applicant)args.SwipeControl.DataContext, FileType.Video);
         }
 
-        private async void PodioDownload(object sender, RoutedEventArgs e)
+        private void PodioDownload(object sender, RoutedEventArgs e)
         {
-            if (await NotifyYesNo("This will clear the existing database of both applicants and interviews. Are you sure you want to continue?", "Warning"))
-            {
-                Loading.IsActive = true;
-                try
-                {
-                    var applicants = await PodioService.GetApplicants();
-                    await ProcessApplicants(applicants);
-                    LoadApplicants();
-                    Loading.IsActive = false;
-                    await Notify("Download complete.", "Success");
-                }
-                catch (Exception ex)
-                {
-                    Loading.IsActive = false;
-                    await Notify("We encountered an issue downloading applicants from Podio.", "Error");
-                }
-            }
+            //if (await NotifyYesNo("This will clear the existing database of both applicants and interviews. Are you sure you want to continue?", "Warning"))
+            //{
+            //    Loading.IsActive = true;
+            //    try
+            //    {
+            //        var applicants = await PodioService.GetApplicants();
+            //        await ProcessApplicants(applicants);
+            //        LoadApplicants();
+            //        Loading.IsActive = false;
+            //        await Notify("Download complete.", "Success");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Loading.IsActive = false;
+            //        await Notify("We encountered an issue downloading applicants from Podio.", "Error");
+            //    }
+            //}
         }
 
         private async void ShowPodioCredentialDialog(object sender, RoutedEventArgs e)
@@ -240,21 +235,21 @@ namespace FormCapture.Controls
             await Utilities.ShowPodioCredentialDialog();
         }
 
-        private async void PodioUpload(object sender, RoutedEventArgs e)
+        private void PodioUpload(object sender, RoutedEventArgs e)
         {
-            Loading.IsActive = true;
-            try
-            {
-                var context = new FormContext();
-                await PodioService.Upload2017Interviews(context.Interviews.ToList());
-                Loading.IsActive = false;
-                await Notify("Your interviews are now saved in Podio.", "Upload Complete");
-            }
-            catch (Exception ex)
-            {
-                Loading.IsActive = false;
-                await Notify("We encountered an issue uploading to Podio.", "Error");
-            }
+            //Loading.IsActive = true;
+            //try
+            //{
+            //    var context = new FormContext();
+            //    await PodioService.Upload2017Interviews(context.Interviews.ToList());
+            //    Loading.IsActive = false;
+            //    await Notify("Your interviews are now saved in Podio.", "Upload Complete");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Loading.IsActive = false;
+            //    await Notify("We encountered an issue uploading to Podio.", "Error");
+            //}
 
         }
 
@@ -263,7 +258,8 @@ namespace FormCapture.Controls
             if (sortBy == SortBy.FNAME_ASC)
             {
                 sortBy = SortBy.FNAME_DSC;
-            } else
+            }
+            else
             {
                 sortBy = SortBy.FNAME_ASC;
             }
@@ -281,6 +277,59 @@ namespace FormCapture.Controls
                 sortBy = SortBy.LNAME_ASC;
             }
             SortApplicants();
+        }
+
+        private async void DownloadApplicants(object sender, RoutedEventArgs e)
+        {
+            if (await NotifyYesNo("This will erase all applicants AND interviews that are currently in the database. Do you want to continue?", "Warning"))
+            {
+                var url = await ShowURLDialog("Enter Server URL", "Download");
+                if (url != null)
+                {
+                    Loading.IsActive = true;
+                    try
+                    {
+                        await ProcessApplicants(await ApplicantService.getApplicants(url));
+                        LoadApplicants();
+                    }
+                    catch
+                    {
+                        await Notify("We couldn't get applicants from that URL. Please try a different one.", "Download Failed");
+                    }
+                    finally
+                    {
+                        Loading.IsActive = false;
+                    }
+                }
+            }
+        }
+
+        private async void UploadApplicants(object sender, RoutedEventArgs e)
+        {
+            var urls = await ShowDualURLDialog("Enter Server URLs", "Upload", "GET URL", "POST URL");
+            if (urls != null)
+            {
+                Loading.IsActive = true;
+                try
+                {
+                    if (await ApplicantService.uploadApplicants(urls[1], urls[0]))
+                    {
+                        await Notify("We've uploaded all unique applicants.", "Success");
+                    } else
+                    {
+                        throw new Exception();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    await Notify("We couldn't upload applicants to that URL. Please try a different one.", "Upload Failed");
+                }
+                finally
+                {
+                    Loading.IsActive = false;
+                }
+            }
         }
     }
 }

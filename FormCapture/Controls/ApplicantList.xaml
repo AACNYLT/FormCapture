@@ -67,14 +67,23 @@
                         <MenuFlyoutItem Icon="Document" Click="SaveTemplate" Text="Save CSV Template"></MenuFlyoutItem>
                         </MenuFlyoutSubItem>
                         <MenuFlyoutSubItem Icon="Globe" Text="Remote Server">
-                            <MenuFlyoutItem Icon="Download" Text="Download Applicants" />
-                            <MenuFlyoutItem Icon="Upload" Text="Upload Interviews" />
+                            <!--<MenuFlyoutSubItem Icon="Download" Text="Download">-->
+                                <MenuFlyoutItem Icon="People" Click="DownloadApplicants" Text="Download Applicants" />
+                                <!--<MenuFlyoutItem Text="Download Interviews" />-->
+                            <!--</MenuFlyoutSubItem>-->
+                            <!--<MenuFlyoutSubItem Icon="Upload" Text="Upload">
+                                <MenuFlyoutItem Icon="People" Click="UploadApplicants" Text="Upload Applicants" />
+                                <MenuFlyoutItem Icon="OpenFile" Text="Upload Interviews" />
+                            </MenuFlyoutSubItem>
+                            <MenuFlyoutSubItem Text="Administration">
+
+                            </MenuFlyoutSubItem>-->
                         </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton Icon="Add" Click="AddApplicant" AllowFocusOnInteraction="True" ToolTipService.ToolTip="Add Applicant"/>
-            <AppBarButton Icon="Sort" ToolTipService.ToolTip="Sort">
+            <AppBarButton Icon="AddFriend" Click="AddApplicant" AllowFocusOnInteraction="True" ToolTipService.ToolTip="Add Applicant"/>
+            <AppBarButton Icon="OpenWith" ToolTipService.ToolTip="Sort">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem Click="SortByFirstName" Text="First Name" />

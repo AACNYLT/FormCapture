@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Controls;
 using static FormCapture.Classes.Enumerations;
 using static FormCapture.Classes.Utilities;
 using FormCapture.Classes;
+using FormCapture.Services;
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace FormCapture
@@ -17,8 +18,7 @@ namespace FormCapture
         public InterviewPanel2017(Applicant _applicant)
         {
             applicant = _applicant;
-            var context = new FormContext();
-            var results = context.Interviews.Where(n => n.ApplicantId == applicant.Id).ToList();
+            var results = InterviewService.getInterviews(applicant.Id);
             if (results.Count() > 0)
             {
                 interview = results.FirstOrDefault();
@@ -39,17 +39,15 @@ namespace FormCapture
 
         public async void Save(SaveFormOptions saveBehavior = SaveFormOptions.ShowDialog)
         {
-            var context = new FormContext();
             if (newInterview)
             {
                 if (saveBehavior != SaveFormOptions.SuppressDialog)
                 {
-                    context.Interviews.Add(interview);
+                    await InterviewService.saveInterview(interview);
                     newInterview = false;
                 }
             }
-            else { context.Interviews.Update(interview); }
-            await context.SaveChangesAsync();
+            else { await InterviewService.updateInterview(interview); }
             if (saveBehavior == SaveFormOptions.ShowDialog)
             {
                 await Notify("Interview saved.");
